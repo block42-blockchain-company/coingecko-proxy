@@ -20,13 +20,13 @@ def markets():
     page = request.args.get('page')
 
     response = coingecko.get_coins_markets(vs_currency=currency, order='market_cap_desc', per_page=limit, page=page)
-
     return json.dumps(response)
 
 
 @app.route('/coin/<ticker>')
 def coin(ticker):
-    pass
+    response = coingecko.get_coin_by_id(id=ticker)
+    return json.dumps(response)
 
 
 # Run app
