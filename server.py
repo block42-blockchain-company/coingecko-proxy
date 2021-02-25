@@ -20,6 +20,9 @@ def markets():
     limit = request.args.get('limit')
     page = request.args.get('page')
 
+    if None in [currency, limit, page]:
+        return "Error: Missing params!", 403
+
     response = coingecko.get_coins_markets(vs_currency=currency, order='market_cap_desc', per_page=limit, page=page, sparkline=False)
     return json.dumps(response)
 
