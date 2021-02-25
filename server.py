@@ -1,30 +1,33 @@
-import os
-import http.server
-import socketserver
 import json
 
-from http import HTTPStatus
-
+from flask import Flask, request
 from pycoingecko import CoinGeckoAPI
-cg = CoinGeckoAPI()
 
-class Handler(http.server.SimpleHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(HTTPStatus.OK)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-        msg = cg.get_coins_markets(vs_currency='usd', order='market_cap_desc', per_page='250', page='1')
-        j = json.dumps(msg)
-        self.wfile.write(j.encode())
+app = Flask(__name__)
 
-port = int(os.getenv('PORT', 6543))
-print('Listening on port %s' % (port))
-httpd = socketserver.TCPServer(('', port), Handler)
-httpd.serve_forever()
+coingecko = CoinGeckoAPI()
 
 
+@app.route('/')
+def root():
+    return "ttfm 🚀"
 
 
+@app.route('/markets')
+def markets():
+    currency = request.args.get('currency')
+    limit = request.args.get('limit')
+    page = request.args.get('page')
+
+    response = coingecko.get_coins_markets(vs_currency=currency, order='market_cap_desc', per_page=limit, page=page)
+    return json.dumps(response)
 
 
+@app.route('/coin/<ticker>')
+def coin(ticker):
+    response = coingecko.get_coin_by_id(id=ticker)
+    return json.dumps(response)
 
+
+# Run app
+app.run()
