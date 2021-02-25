@@ -1,3 +1,4 @@
+import os
 import json
 
 from flask import Flask, request
@@ -30,4 +31,4 @@ def coin(ticker):
 
 
 # Run app
-app.run()
+app.run(host="0.0.0.0", port=os.environ["PORT"])
