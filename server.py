@@ -20,7 +20,7 @@ def markets():
     limit = request.args.get('limit')
     page = request.args.get('page')
 
-    response = coingecko.get_coins_markets(vs_currency=currency, order='market_cap_desc', per_page=limit, page=page)
+    response = coingecko.get_coins_markets(vs_currency=currency, order='market_cap_desc', per_page=limit, page=page, sparkline=False)
     return json.dumps(response)
 
 
