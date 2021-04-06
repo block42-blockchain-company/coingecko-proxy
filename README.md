@@ -1,1 +1,1 @@
-# crypto-price-fetch
+# coingecko-proxy
